@@ -1,0 +1,21 @@
+
+{
+  "id": "./",
+  "name": "DecideForMe",
+  "short_name": "DecideForMe",
+  "description": "Make everyday decisions easier.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#111111",
+  "theme_color": "#111111",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

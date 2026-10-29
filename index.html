@@ -1,0 +1,203 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#111111">
+  <meta name="description" content="DecideForMe helps you choose places, activities, and everyday decisions.">
+
+  <title>DecideForMe</title>
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icon.svg">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#">
+      <span class="brand-icon">?</span>
+      <span>Decide<span class="accent">ForMe</span></span>
+    </a>
+    <span class="beta">BETA</span>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <span class="eyebrow">LESS THINKING, MORE LIVING</span>
+      <h1>Can't decide?<br><span>We'll help.</span></h1>
+      <p>Find a place, pick an activity, or let chance decide.</p>
+    </section>
+
+    <section class="section">
+      <h2>What do you need?</h2>
+
+      <div class="category-grid">
+        <button class="category-card selected" data-mode="eat" type="button">
+          <span class="category-icon">🍜</span>
+          <strong>Where to eat</strong>
+          <small>Find food near you</small>
+        </button>
+
+        <button class="category-card" data-mode="go" type="button">
+          <span class="category-icon">🧭</span>
+          <strong>Where to go</strong>
+          <small>Discover places</small>
+        </button>
+
+        <button class="category-card" data-mode="do" type="button">
+          <span class="category-icon">🎯</span>
+          <strong>What to do</strong>
+          <small>Choose an activity</small>
+        </button>
+
+        <button class="category-card" data-mode="pick" type="button">
+          <span class="category-icon">🎡</span>
+          <strong>Pick for me</strong>
+          <small>Spin your choices</small>
+        </button>
+      </div>
+    </section>
+
+    <section class="panel" id="place-panel">
+      <div class="panel-heading">
+        <div>
+          <span class="eyebrow">YOUR NEXT DECISION</span>
+          <h2 id="place-title">Find Somewhere to Eat</h2>
+        </div>
+        <span class="panel-emoji">📍</span>
+      </div>
+
+      <p class="muted">
+        Search for places, add your favorites, and let DecideForMe
+        pick a winner.
+      </p>
+
+      <form id="place-search-form" class="place-search-form">
+        <label for="place-query">What are you looking for?</label>
+        <input
+          id="place-query"
+          type="text"
+          placeholder="Restaurants, cafes, parks..."
+          maxlength="100"
+          required
+        >
+
+        <label for="place-area">Location or city (optional)</label>
+        <input
+          id="place-area"
+          type="text"
+          placeholder="Enter a city or area, or use your location"
+          maxlength="100"
+        >
+
+        <button class="primary-button" id="search-places" type="submit">
+          🔎 Search places inside the app
+        </button>
+      </form>
+
+      <button class="secondary-button" id="find-places" type="button">
+        📍 Open Google Maps instead
+      </button>
+
+      <p class="status" id="place-status" role="status" aria-live="polite">
+        Search by category and location. You can also allow location access
+        so the app can look for nearby options.
+      </p>
+
+      <div id="place-results" class="results"></div>
+
+      <section class="selected-places-section">
+        <h3>Your place choices <span id="place-choice-count">(0)</span></h3>
+        <p class="muted">Add at least two options to choose a winner.</p>
+        <ul id="place-choice-list" class="choice-list"></ul>
+
+        <button
+          class="primary-button"
+          id="decide-place"
+          type="button"
+          disabled
+        >
+          🎲 Pick a place for me
+        </button>
+
+        <div id="place-winner" class="place-winner" role="status"
+          aria-live="polite"></div>
+      </section>
+    </section>
+
+    <section class="panel hidden" id="picker-panel">
+      <div class="panel-heading">
+        <div>
+          <span class="eyebrow">YOU BRING THE OPTIONS</span>
+          <h2>Let chance decide.</h2>
+        </div>
+        <span class="panel-emoji">🎡</span>
+      </div>
+
+      <p class="muted">
+        Add restaurants, places, activities, or anything else.
+        DecideForMe will randomly pick one from your list.
+      </p>
+
+      <form id="choice-form" class="choice-form">
+        <input
+          id="choice-input"
+          type="text"
+          maxlength="100"
+          placeholder="Enter a choice or place..."
+          autocomplete="off"
+          required
+        >
+        <button class="add-button" type="submit">Add</button>
+      </form>
+
+      <ul id="choice-list" class="choice-list"></ul>
+
+      <div class="wheel-wrap">
+        <div class="wheel-pointer">▼</div>
+        <div id="wheel" class="wheel">
+          <span id="wheel-label">YOUR CHOICES</span>
+        </div>
+      </div>
+
+      <button class="primary-button" id="spin-button" type="button" disabled>
+        🎡 Spin the wheel
+      </button>
+
+      <button class="text-button" id="clear-choices" type="button">
+        Clear all choices
+      </button>
+
+      <div id="pick-result" class="pick-result" role="status"
+        aria-live="polite"></div>
+    </section>
+
+    <p class="attribution">
+      Place search uses <a href="https://photon.komoot.io/"
+        target="_blank" rel="noopener noreferrer">Photon</a>.
+      Maps links open <a href="https://maps.google.com/"
+        target="_blank" rel="noopener noreferrer">Google Maps</a>.
+    </p>
+  </main>
+
+  <footer>Made to make decisions easier. ❤️</footer>
+
+  <script src="script.js"></script>
+
+  <script>
+    if ("serviceWorker" in navigator &&
+        (location.protocol === "https:" ||
+         location.hostname === "localhost" ||
+         location.hostname === "127.0.0.1")) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./service-worker.js")
+          .catch(error => {
+            console.error("Service worker registration failed:", error);
+          });
+      });
+    }
+  </script>
+</body>
+</html>
